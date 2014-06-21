@@ -11,10 +11,12 @@ class window.App extends Backbone.Model
     dealerHand = @get('dealerHand')
     playerHand = @get('playerHand')
 
+    # Check for blackjack
     if (dealerHand.length is 2) and (dealerHand.bestScore() is 21)
       win = false
     else if (playerHand.length is 2) and (playerHand.bestScore() is 21)
       win = true
+    # Check for standard win
     else
       win = (playerHand.bestScore() <= 21) and ((playerHand.bestScore() > dealerHand.bestScore()) or (dealerHand.bestScore() > 21))
 
@@ -42,7 +44,7 @@ class window.App extends Backbone.Model
         dealerHand.at(0).flip()
         if playerHand.scores()[0] > 21 then @gameOver()
         else if dealerHand.bestScore() < 17 then dealerHand.hit()
-        else @gameOver() #refactor to trigger?
+        else @gameOver()
       , @)
 
     dealerHand.on('stand', ->
