@@ -8,8 +8,12 @@ class window.AppView extends Backbone.View
   '
 
   events:
-    "click .hit-button": -> @model.get('playerHand').hit()
-    "click .stand-button": -> @model.get('playerHand').stand()
+    "click .hit-button": ->
+      @model.get('playerHand').hit()
+
+    "click .stand-button": ->
+      @model.get('playerHand').stand()
+
     "click .new-game-button": ->
       @model.initialize()
       $('.hit-button, .stand-button').removeClass('disabled')
@@ -18,7 +22,8 @@ class window.AppView extends Backbone.View
   initialize: ->
     @render()
 
-    @model.on('gameOver', ->
+    @model.on('gameOver', (win) ->
+        @$('.game-status-container').text( if win then "YOU WIN" else "YOU LOSE" )
         @$('.hit-button, .stand-button').addClass('disabled')
         @$('.new-game-button').removeClass('disabled')
       , @)

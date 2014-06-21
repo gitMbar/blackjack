@@ -15,13 +15,14 @@ class window.App extends Backbone.Model
 
     #happens after playerHand.stand
     dealerHand.on('add', ->
-        if @scores()[0] <= 17 then @hit() else @stand()
+        if @bestScore() < 17 then @hit() else @stand()
       , dealerHand)
 
     playerHand.on('stand', ->
         dealerHand.at(0).flip()
-        if playerHand.scores()[0] > 21 then @gameOver() else
-          if dealerHand.scores()[0] <= 17 then dealerHand.hit() else @gameOver() #refactor to trigger?
+        if playerHand.scores()[0] > 21 then @gameOver()
+        else if dealerHand.bestScore() < 17 then dealerHand.hit()
+        else @gameOver() #refactor to trigger?
       , @)
 
     dealerHand.on('stand', ->
@@ -30,5 +31,6 @@ class window.App extends Backbone.Model
 
   gameOver: ->
     # Compute stuff
-    @trigger('gameOver', @)
+    win = (@get('playerHand').bestScore() <= 21) and ((@get('playerHand').bestScore() > @get('dealerHand').bestScore()) or (@get('dealerHand').bestScore() > 21))
+    @trigger('gameOver', win)
     console.log("game over")
