@@ -9,7 +9,6 @@ class window.Hand extends Backbone.Collection
 
   stand: ->
     @trigger 'stand', @
-    console.log("actually, stand down now.")
 
   scores: ->
     # The scores are an array of potential scores.

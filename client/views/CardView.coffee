@@ -2,7 +2,9 @@ class window.CardView extends Backbone.View
 
   className: 'card'
 
-  template: _.template '<%= rankName %> of <%= suitName %>'
+  tagName: 'img'
+
+  template: _.template 'img/cards/<%= rankName %>-<%= suitName %>.png'
 
   initialize: ->
     @model.on 'change', => @render
@@ -10,5 +12,12 @@ class window.CardView extends Backbone.View
 
   render: ->
     @$el.children().detach().end().html
-    @$el.html @template @model.attributes
-    @$el.addClass 'covered' unless @model.get 'revealed'
+    #this should be complicated for no reason
+    @$el.attr 'src', (if not @model.get 'revealed' then "img/card-back.png"
+    else @template (=>
+      lowerCaseWords = {}
+      for key , value of @model.attributes
+        if key is 'suitName' or key is 'rankName'
+          lowerCaseWords[key] = value.toString().toLowerCase()
+      lowerCaseWords
+      )())

@@ -10,7 +10,6 @@ class window.App extends Backbone.Model
     # Compute stuff
     win = (@get('playerHand').bestScore() <= 21) and ((@get('playerHand').bestScore() > @get('dealerHand').bestScore()) or (@get('dealerHand').bestScore() > 21))
     @trigger('gameOver', win)
-    console.log("game over")
 
   newGame: ->
     if (@get 'deck').length < 26 then @set 'deck', deck = new Deck()
