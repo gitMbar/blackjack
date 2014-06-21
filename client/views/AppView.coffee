@@ -15,7 +15,7 @@ class window.AppView extends Backbone.View
       @model.get('playerHand').stand()
 
     "click .new-game-button": ->
-      @model.initialize()
+      @model.newGame()
       $('.hit-button, .stand-button').removeClass('disabled')
       @render()
 

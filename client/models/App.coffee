@@ -3,8 +3,20 @@ class window.App extends Backbone.Model
 
   initialize: ->
     @set 'deck', deck = new Deck()
-    @set 'playerHand', deck.dealPlayer()
-    @set 'dealerHand', deck.dealDealer()
+    @newGame()
+
+
+  gameOver: ->
+    # Compute stuff
+    win = (@get('playerHand').bestScore() <= 21) and ((@get('playerHand').bestScore() > @get('dealerHand').bestScore()) or (@get('dealerHand').bestScore() > 21))
+    @trigger('gameOver', win)
+    console.log("game over")
+
+  newGame: ->
+    if (@get 'deck').length < 26 then @set 'deck', deck = new Deck()
+
+    @set 'playerHand', (@get "deck").dealPlayer()
+    @set 'dealerHand', (@get "deck").dealDealer()
 
     playerHand = @get 'playerHand'
     dealerHand = @get 'dealerHand'
@@ -28,9 +40,3 @@ class window.App extends Backbone.Model
     dealerHand.on('stand', ->
         @gameOver()
       , @)
-
-  gameOver: ->
-    # Compute stuff
-    win = (@get('playerHand').bestScore() <= 21) and ((@get('playerHand').bestScore() > @get('dealerHand').bestScore()) or (@get('dealerHand').bestScore() > 21))
-    @trigger('gameOver', win)
-    console.log("game over")
