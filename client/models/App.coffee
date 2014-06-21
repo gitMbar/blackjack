@@ -13,16 +13,21 @@ class window.App extends Backbone.Model
         if @scores()[0] >= 21 then @stand()
       , playerHand)
 
+    #happens after playerHand.stand
     dealerHand.on('add', ->
         if @scores()[0] <= 17 then @hit else @stand()
       , dealerHand)
 
     playerHand.on('stand', ->
-      dealerHand.at(0).flip()
-      dealerHand.hit()
+        dealerHand.at(0).flip()
+        if playerHand.scores()[0] > 21 then @gameOver() else
+          if dealerHand.scores()[0] <= 17 then dealerHand.hit();
       #if less than 21 then dealerPlay else game over
-      )
+      , @)
 
     dealerHand.on('stand', ->
-      #game over
-      )
+        @gameOver()
+      , @)
+
+  gameOver: ->
+    console.log("game over bro")
