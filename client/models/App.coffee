@@ -21,8 +21,7 @@ class window.App extends Backbone.Model
     playerHand.on('stand', ->
         dealerHand.at(0).flip()
         if playerHand.scores()[0] > 21 then @gameOver() else
-          if dealerHand.scores()[0] <= 17 then dealerHand.hit();
-      #if less than 21 then dealerPlay else game over
+          if dealerHand.scores()[0] <= 17 then dealerHand.hit(); #refactor to trigger?
       , @)
 
     dealerHand.on('stand', ->
