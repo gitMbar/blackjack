@@ -8,7 +8,16 @@ class window.App extends Backbone.Model
 
   gameOver: ->
     # Compute stuff
-    win = (@get('playerHand').bestScore() <= 21) and ((@get('playerHand').bestScore() > @get('dealerHand').bestScore()) or (@get('dealerHand').bestScore() > 21))
+    dealerHand = @get('dealerHand')
+    playerHand = @get('playerHand')
+
+    if (dealerHand.length is 2) and (dealerHand.bestScore() is 21)
+      win = false
+    else if (playerHand.length is 2) and (playerHand.bestScore() is 21)
+      win = true
+    else
+      win = (playerHand.bestScore() <= 21) and ((playerHand.bestScore() > dealerHand.bestScore()) or (dealerHand.bestScore() > 21))
+
     @trigger('gameOver', win)
 
   newGame: ->

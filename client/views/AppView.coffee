@@ -13,6 +13,7 @@ class window.AppView extends Backbone.View
 
     "click .stand-button": ->
       @model.get('playerHand').stand()
+      @$('.hit-button, .stand-button').addClass('disabled')
 
     "click .new-game-button": ->
       @model.newGame()
@@ -24,8 +25,8 @@ class window.AppView extends Backbone.View
 
     @model.on('gameOver', (win) ->
         @$('.game-status-container').text( if win then "YOU WIN" else "YOU LOSE" )
-        @$('.hit-button, .stand-button').addClass('disabled')
         @$('.new-game-button').removeClass('disabled')
+        @$('.hit-button, .stand-button').addClass('disabled')
       , @)
 
   render: ->
