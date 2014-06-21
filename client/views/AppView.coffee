@@ -1,19 +1,27 @@
 class window.AppView extends Backbone.View
 
   template: _.template '
-    <button class="hit-button">Hit</button> <button class="stand-button">Stand</button>
+    <button class="hit-button">Hit</button> <button class="stand-button">Stand</button> <button class="new-game-button disabled">New Game</button>
     <div class="player-hand-container"></div>
     <div class="dealer-hand-container"></div>
-    <div class="game-status-container">Click For New Game</div>
+    <div class="game-status-container"></div>
   '
 
   events:
     "click .hit-button": -> @model.get('playerHand').hit()
     "click .stand-button": -> @model.get('playerHand').stand()
-    "click .game-status-container": -> @model.initialize(); @render()
+    "click .new-game-button": ->
+      @model.initialize()
+      $('.hit-button, .stand-button').removeClass('disabled')
+      @render()
 
   initialize: ->
     @render()
+
+    @model.on('gameOver', ->
+        @$('.hit-button, .stand-button').addClass('disabled')
+        @$('.new-game-button').removeClass('disabled')
+      , @)
 
   render: ->
     @$el.children().detach()
